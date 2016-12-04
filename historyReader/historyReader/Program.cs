@@ -8,13 +8,13 @@ using System.IO;
 namespace historyReader {
 	class Program {
 		static void Main(string[] args) {
-			JsonReadWrite jrw = new JsonReadWrite(args[0]);
-			if (args[1]=="-r") {
+			JsonReadWrite jrw = new JsonReadWrite(args[2]);
+			if (args[0]=="-r") {
 				HistoryQueue hq = jrw.Reader();
-				Console.WriteLine(hq.TakePath(int.Parse(args[2])));
-			}else if(args[1]=="-w") {
+				Console.WriteLine(hq.TakePath(int.Parse(args[1])));
+			}else if(args[0]=="-w") {
 				HistoryQueue hq = jrw.Reader();
-				hq.EnQ(args[2]);
+				hq.EnQ(args[1]);
 				jrw.Writer(hq);
 				Console.WriteLine("Complete!");
 			}
