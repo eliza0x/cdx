@@ -79,9 +79,22 @@ if [ $cd_flag = 1 ]; then
 			mkdir $change_to
 			cd $change_to > /dev/null
 			echo $bef_dir >> ~/.cdx_history
+			echo -e "  ${clr_Black}--> ${clr_main}cdx ${clr_Black}: ${clr_green}$bef_dir${clr_Black} ->>>${clr_green} `pwd`${clr_reset} "
 		fi
 	else
 		echo -e "  ${clr_Black}--> ${clr_main}cdx ${clr_Black}: ${clr_green}$bef_dir${clr_Black} ->>>${clr_green} `pwd`${clr_reset} "
 		echo $bef_dir >> ~/.cdx_history
+
+		history -a
+		line=`cat ~/.bash_history|wc -l`
+		lineStart=`echo $line - 6|bc`
+		if [ $lineStart -lt 1 ]; then
+			lineStart=1
+		fi
+		if [ `cat ~/.bash_history|sed -n "$lineStart,${line}p"|grep "ls"|wc -l` -ge 2 ]; then
+			echo -e "${clr_main}探し物ですか？${clr_reset}"
+			ls -la
+		fi
 	fi
 fi
+
