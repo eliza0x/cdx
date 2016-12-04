@@ -8,6 +8,9 @@ using System.IO;
 namespace historyReader {
 	class Program {
 		static void Main(string[] args) {
+			if (args.Length<3) {
+				return;
+			}
 			JsonReadWrite jrw = new JsonReadWrite(args[2]);
 			if (args[0]=="-r") {
 				HistoryQueue hq = jrw.Reader();
@@ -23,7 +26,9 @@ namespace historyReader {
 	class JsonReadWrite {
 		string history_path = "~/.cdx_history.json";
 		public JsonReadWrite(string hi_path) {
-			history_path = hi_path;
+			if (hi_path!="default") {
+				history_path = hi_path;
+			}
 		}
 		public HistoryQueue Reader() {
 			StreamReader sr = new StreamReader(@""+history_path);
