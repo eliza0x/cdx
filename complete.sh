@@ -4,7 +4,7 @@
 _cdx_complete(){
 	case $2 in
 		[0-9]* )
-			COMPREPLY=( `echo "${cdx_bookmark[$2]}"` )
+			COMPREPLY=( `cat ~/.cdx.bookmark|head -n$2|tail -n1` )
 			;;
 		*)
 			;;
