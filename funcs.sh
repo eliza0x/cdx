@@ -1,24 +1,24 @@
 #!/bin/bash
 
+instdir="$(cd "$(dirname "${BASH_SOURCE:-$0}")"; pwd)"
 
 cdx()
 {
-	. ~/hxs/testdir/cdx/cdx.sh $@
+	. ${instdir}/cdx.sh $@
 }
-source ~/hxs/testdir/cdx/complete.sh
+source $instdir/complete.sh
 export CDX_AUTO_LS=0
-alias xa='~/hxs/testdir/autotest.sh'
 
 pView()
 {
-  ~/hxs/testdir/cdx/pView.sh $@
+  $instdir/pView.sh $@
 }
 
 cdx_echo(){
-  ~/hxs/testdir/cdx/cdx_echo.sh $@
+  $instdir/cdx_echo.sh $@
 }
 file_deco(){
-  ~/hxs/testdir/cdx/file_deco.sh
+  $instdir/file_deco.sh
 }
 
 man_tmux()
