@@ -94,7 +94,7 @@ if [ $cd_flag = 1 ]; then
 		if [ $lineStart -lt 1 ]; then
 			lineStart=1
 		fi
-		if [ `cat ~/.bash_history|sed -n "$lineStart,${line}p"|grep "ls"|wc -l` -ge 2 ]; then
+		if [ `cat ~/.bash_history|sed -n "$lineStart,${line}p"|grep "ls"|wc -l` -ge 2 ] && [ $CDX_AUTO_LS == 1  ]; then
 			echo -e "${clr_main}探し物ですか？${clr_reset}"
 			ls -la
 		fi
