@@ -38,6 +38,10 @@ if [ $cdx_option == "-p" ]; then
 	cd_flag=0
 fi
 
+if [ $cdx_option == "+b" ]; then
+  pwd >> ~/.cdx.bookmark
+  return 0
+fi
 
 if [ $cdx_option == "-h" ]; then
   bef_dir=`pwd`
