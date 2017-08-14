@@ -152,6 +152,7 @@ if [ $? != 0 ]; then
 else
   cdx_echo $__cdx_current $(pwd)
   if [ $__cdx_flag_ls == 1 ]; then
+    echo ""
     ls
   fi
 fi
