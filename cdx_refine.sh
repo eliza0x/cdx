@@ -119,11 +119,12 @@ done
 
 __cdx_param=$(echo $__cdx_param|sed "s|~|$HOME|g")
 
-ls $__cdx_param
+ls $__cdx_param 2>/dev/null > /dev/null
 if [ $? != 0 ] && [ $__cdx_flag_ssh == 1 ]; then
-  __cdx_ssh_hosts=$(cat ~/.ssh/config|grep ^Host|grep $__cdx_param)
+  __cdx_ssh_hosts=$(cat ~/.ssh/config|grep ^Host|grep $__cdx_param) 2>/dev/null
   if [ "$__cdx_ssh_hosts" != "" ]; then
-    exec ssh $__cdx_param
+    echo -e " ${clr_green}ssh to $__cdx_param ${clr_reset}"
+    ssh $__cdx_param
     return 0
   fi
 fi
