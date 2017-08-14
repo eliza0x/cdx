@@ -122,7 +122,7 @@ __cdx_param=$(echo $__cdx_param|sed "s|~|$HOME|g")
 ls $__cdx_param 2>/dev/null > /dev/null
 if [ $? != 0 ] && [ $__cdx_flag_ssh == 1 ]; then
   __cdx_ssh_hosts=$(cat ~/.ssh/config|grep ^Host|grep $__cdx_param) 2>/dev/null
-  if [ $? != 0 ]; then
+  if [ $? == 0 ]; then
     echo -e " ${clr_green}ssh to $__cdx_param ${clr_reset}"
     ssh $__cdx_param
     return 0
@@ -150,7 +150,7 @@ if [ $? != 0 ]; then
     fi
   fi
 else
-  echo_cdx $__cdx_current $(pwd)
+  cdx_echo $__cdx_current $(pwd)
   if [ $__cdx_flag_ls == 1 ]; then
     ls
   fi
