@@ -1,107 +1,157 @@
 #!/bin/bash
 
-## cdx is hyper cd command
+## cdx - hyper cd command
 
-##color setting
+##color
 clr_error="\e[1;31m"
 clr_main="\e[1;35m"
 clr_Black="\e[1;30m"
 clr_reset="\e[0;39m"
 clr_green="\e[1;32m"
 
-cdx_bm_arg=$1
-cd_flag=1
-change_to=$HOME
-cdx_option=$1
+##もろもろのフラグ
+__cdx_flag_ssh=0
+__cdx_flag_use_fazzysearch=0
+__cdx_flag_use_cd=0
+__cdx_flag_make=0
+__cdx_flag_automake=0
+__cdx_flag_ls=0
+##もろもろの変数
+__cdx_fazzy_pipe="cat"
+__cdx_current=`pwd`
+__cdx_cd_command="pushd"
+## OPT
+ALLOPTS="$CDX_DEFAULT_OPTS $@"
 
+##option解析
+for OPT in $ALLOPTS; do
+  case "$OPT" in
+    '--ssh')
+      __cdx_flag_ssh=1
+      shift
+      ;;
+    '--help')
+      echo -e  "Usage : cdx [OPTIONS] PATH"
+      echo -e  "cdx is hyper cd command"
+      echo -e  "This script is wrapper for the cd command."
+      echo -e  "cdx automatically adds the value stored in CDX_DEFAULT_OPTS to option."
+      echo -e  "Options : "
+      echo -e  "\t--help\t\tprint this help."
+      echo -e  "\t--fuzzy\t\tUse fuzzy search like fzf or peco or etc.The command must be stored in the variable  CDX_FUZZY_COMMAND"
+      echo -e  "\t--cd\t\tUse cd command instead of pushd"
+      echo -e  "\t--ls\t\tls command automatically executed after change directory."
+      echo -e  "\t-h\t\tcd from history.This option must be use --fuzzy option"
+      echo -e  "\t-b\t\tcd from bookmark.This option must be use --fuzzy option"
+      echo -e  "\t+b\t\tAdd current directory to bookmark"
+      echo -e  "\t-p\t\tUse popd command instead cd or pushd command."
+      echo -e  "\t--automake\tWhen destination directory is not exists. cdx make directory automatically."
+      echo -e  "\t--make\t\tWhen destination directory is not exists. cdx asks if you want to make directory."
+      echo -e  "\t--ssh\t\tAllow ssh login when giving cdx a host name in ~/.ssh/config"
+      return 0
+      ;;
+    '--fuzzy')
+      __cdx_flag_use_fazzysearch=1
+      __fazzy_pipe="$CDX_FUZZY_COMMAND"
+      shift
+      ;;
+    '--cd')
+      __cdx_cd_command="cd"
+      __cdx_flag_use_cd=1
+      shift
+      ;;
+    '--ls')
+      __cdx_flag_ls=1
+      shift
+      ;;
+    '-h')
+      if [ $__cdx_flag_use_fazzysearch = 0 ]; then
+        echo -e "${clr_error} cdx : ${clr_reset} this option must be use --fuzzy option"
+        return 0
+      fi
+      __to=`cat ~/.cdx_history|$__cdx_fazzy_pipe`
+      if [ "$__to" != "" ]; then
+        $__cdx_cd_command $__to  > /dev/null
+        cdx_echo $__cdx_current $__to
+        return 0
+      fi
+      ;;
+    '-b')
+      if [ $__cdx_flag_use_fazzysearch = 0 ]; then
+        echo -e "${clr_error} cdx : ${clr_reset} this option must be use --fuzzy option"
+        return 0
+      fi
+      __to=$(cat ~/.cdx.bookmark|$__cdx_fazzy_pipe)
+      if [ "$__to" != "" ]; then
+        $__cdx_cd_command $__to > /dev/null
+        cdx_echo $__cdx_current $__to
+      fi
+      return 0
+      ;;
+    '+b')
+      echo -e "${clr_green} add Bookmark `pView`"
+      echo $__cdx_current >> ~/.cdx.bookmark
+      return 0
+      ;;
+    '-p')
+      popd
+      if [ $? = 0 ]; then
+        cdx_echo $__cdx_current `pwd`
+      fi
+      return 0
+      ;;
+    '--automake')
+      __cdx_flag_make=1
+      __cdx_flag_automake=1
+      shift
+      ;;
+    '--make')
+      __cdx_flag_make=1
+      shift
+      ;;
+    -*)
+      echo "$OPT Didn't match anything"
+      ;;
+    *)
+      __cdx_param="$OPT"
+      ;;
+  esac
+done
 
-if [ "$cdx_bm_arg" == "" ]; then
-	cdx_bm_arg=$HOME
-	cdx_option=$HOME
+__cdx_param=$(echo $__cdx_param|sed "s|~|$HOME|g")
+
+ls $__cdx_param 2>/dev/null > /dev/null
+if [ $? != 0 ] && [ $__cdx_flag_ssh == 1 ]; then
+  __cdx_ssh_hosts=$(cat ~/.ssh/config|grep ^Host|grep $__cdx_param) 2>/dev/null
+  if [ $? != 0 ]; then
+    echo -e " ${clr_green}ssh to $__cdx_param ${clr_reset}"
+    ssh $__cdx_param
+    return 0
+  fi
 fi
 
-if expr "$cdx_bm_arg" : "[0-9]*" > /dev/null  ; then
-	#読み出し
-change_to=`cat ~/.cdx.bookmark|head -n$cdx_bm_arg|tail -n1`
+pushd $__cdx_param 2>&1 > /dev/null
+if [ $? != 0 ]; then
+  echo -e "${clr_error}cdx : ${clr_reset}$__cdx_paramが見つかりませんでした"
+  if [ $__cdx_flag_make == 1 ]; then
+    if [ $__cdx_flag_automake == 1 ]; then
+      mkdir $__cdx_param
+      $__cdx_cd_command $__cdx_param
+      echo $__cdx_param >> ~/.cdx_history
+      cdx_echo $__cdx_current $(pwd)
+    else
+      echo -en "${clr_main}カレント以下に作りましょうか？(y/n):"
+      read __cdx_ans
+      if [ "$__cdx_ans" == "y" ]; then
+        mkdir $__cdx_param
+        $__cdx_cd_command $__cdx_param
+        echo $__cdx_param >> ~/.cdx_history
+        cdx_echo $__cdx_current $(pwd)
+      fi
+    fi
+  fi
 else
-	#引数のところへcd
-	change_to=$cdx_bm_arg
-fi
-
-if [ $cdx_option == "-p" ]; then
-	bef_dir=`pwd`
-	popd
-	if [ $? = 0 ]; then
-		d=`pwd`
-    cdx_echo $bef_dir $d
-	fi
-	cd_flag=0
-fi
-
-if [ $cdx_option == "+b" ]; then
-  pwd >> ~/.cdx.bookmark
-  return 0
-fi
-
-if [ $cdx_option == "-h" ]; then
-  bef_dir=`pwd`
-  dir= `cat ~/.cdx_history|fzf --tac`
-  if [ "$dir" != "" ]; then
-    pushd ${dir:=`pwd`} > /dev/null
-    cdx_echo $bef_dir $dir
+  echo_cdx $__cdx_current $(pwd)
+  if [ $__cdx_flag_ls == 1 ]; then
+    ls
   fi
-  cd_flag=0
 fi
-if [ $cdx_option == "-bm" ]; then
-  if [ "$2" == "add" ]; then
-    echo -e "${clr_green} add bookmark `pView`"
-    pwd >> ~/.cdx.bookmark
-  else
-	  export CDX_TMP_BM=`pwd`
-	  echo -e "${clr_green}Temporary BookMark${clr_Black} <-- ${clr_green}`pView`"
-  fi
-	cd_flag=0
-fi
-if [ $cdx_option == "-b" ]; then
-  bef_dir=`pwd`
-  dir=`cat ~/.cdx.bookmark|fzf`
-  if [ "$dir" != "" ]; then
-    pushd $dir > /dev/null
-    cdx_echo $bef_dir $dir
-  fi
-  cd_flag=0
-fi
-if [ $cdx_option == "-bt" ]; then
-	change_to=$CDX_TMP_BM
-	cd_flag=1
-fi
-
-if [ $cd_flag = 1 ]; then
-	bef_dir=`pwd`
-	pushd $change_to  > /dev/null
-	if [ $? != 0 ]; then
-		echo -e -n "${change_to}\nが見つかりませんでした。\nカレント以下に作ろうか？(y/n):"
-		read ans
-		if [ $ans == 'y' ]; then
-			mkdir $change_to
-			pushd $change_to > /dev/null
-			echo $bef_dir >> ~/.cdx_history
-      cdx_echo $bef_dir $change_to
-		fi
-	else
-    cdx_echo $bef_dir $change_to
-		echo $bef_dir >> ~/.cdx_history
-
-		history -a
-		line=`cat ~/.bash_history|wc -l`
-		lineStart=`echo $line - 6|bc`
-		if [ $lineStart -lt 1 ]; then
-			lineStart=1
-		fi
-		if [ `cat ~/.bash_history|sed -n "$lineStart,${line}p"|grep "ls"|wc -l` -ge 2 ] && [ $CDX_AUTO_LS == 1  ]; then
-			echo -e "${clr_main}探し物ですか？${clr_reset}"
-			ls -la
-		fi
-	fi
-fi
-
