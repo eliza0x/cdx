@@ -16,7 +16,8 @@ _cdx_complete(){
       return 0
       ;;
     *\*\*)
-      COMPREPLY=(`echo $2|xargs -I {} dirname {}|sed "s|~|$HOME|"|xargs -I {} find {} -type d|fzf`)
+      dir=`echo "$2"|sed "s/\*//g;s|~|${HOME}|g"`
+      COMPREPLY=("$dir"`ls -l "$dir" |grep ^d|awk '{print $9}'|fzf`)
       return 0
       ;;
 	esac
