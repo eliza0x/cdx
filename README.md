@@ -100,3 +100,6 @@ CDX_DEFAULT_OPTS="--ssh --make --fuzzy"
 CDX_FUZZY_COMMAND="fzf"
 ...
 ```
+
+## __License__
+[MIT](https://github.com/xztaityozx/cdx/blob/master/MITlicese.txt) (c) xztaityozx
