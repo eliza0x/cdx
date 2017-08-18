@@ -31,6 +31,7 @@ for OPT in $ALLOPTS; do
       shift
       ;;
     '--help')
+      echo -e  "cdx version 2.0 2017"
       echo -e  "Usage : cdx [OPTIONS] PATH"
       echo -e  "cdx is hyper cd command"
       echo -e  "This script is wrapper for the cd command."
@@ -40,13 +41,13 @@ for OPT in $ALLOPTS; do
       echo -e  "\t--fuzzy\t\tUse fuzzy search like fzf or peco or etc.The command must be stored in the variable  CDX_FUZZY_COMMAND"
       echo -e  "\t--cd\t\tUse cd command instead of pushd"
       echo -e  "\t--ls\t\tls command automatically executed after change directory."
-      echo -e  "\t-h\t\tcd from history.This option must be use --fuzzy option"
-      echo -e  "\t-b\t\tcd from bookmark.This option must be use --fuzzy option"
+      echo -e  "\t-h\t\tcd from history.This option require --fuzzy option"
+      echo -e  "\t-b\t\tcd from bookmark.This option require --fuzzy option"
       echo -e  "\t+b\t\tAdd current directory to bookmark"
       echo -e  "\t-p\t\tUse popd command instead cd or pushd command."
       echo -e  "\t--automake\tWhen destination directory is not exists. cdx make directory automatically."
       echo -e  "\t--make\t\tWhen destination directory is not exists. cdx asks if you want to make directory."
-      echo -e  "\t--ssh\t\tAllow ssh login when giving cdx a host name in ~/.ssh/config"
+      echo -e  "\t--ssh\t\tAllow ssh login when giving cdx a host name in ~/.ssh/config.if same name directory exists. change directory has priority"
       return 0
       ;;
     '--fuzzy')
