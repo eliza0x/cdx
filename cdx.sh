@@ -96,6 +96,7 @@ for OPT in $ALLOPTS; do
       popd
       if [ $? = 0 ]; then
         cdx_echo $__cdx_current `pwd`
+        echo $(pwd) >> ~/.cdx_history
       fi
       return 0
       ;;
@@ -136,7 +137,7 @@ if [ $? != 0 ]; then
     if [ $__cdx_flag_automake == 1 ]; then
       mkdir $__cdx_param
       $__cdx_cd_command $__cdx_param
-      echo $__cdx_param >> ~/.cdx_history
+      echo $(pwd) >> ~/.cdx_history
       cdx_echo $__cdx_current $(pwd)
     else
       echo -en "${clr_main}カレント以下に作りましょうか？(y/n):"
@@ -144,13 +145,14 @@ if [ $? != 0 ]; then
       if [ "$__cdx_ans" == "y" ]; then
         mkdir $__cdx_param
         $__cdx_cd_command $__cdx_param
-        echo $__cdx_param >> ~/.cdx_history
+        echo $(pwd) >> ~/.cdx_history
         cdx_echo $__cdx_current $(pwd)
       fi
     fi
   fi
 else
   cdx_echo $__cdx_current $(pwd)
+  echo $(pwd) >> ~/.cdx_history
   if [ $__cdx_flag_ls == 1 ]; then
     echo ""
     ls
