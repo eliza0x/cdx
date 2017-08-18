@@ -15,11 +15,11 @@ awk -v end=$length '
     if(idx==end-2){
       print "\\\\e[1;33m/"$1
     }else if(idx<=1){
-      print "\\\\e[1;30m/"$1
+      print "\\\\e[1;34m/"$1
     }else if(idx>=end-4){
       print "\\\\e[1;34m/"$1
     }else if(idx==2){
-      print "\\\\e[1;30m/.."
+      print "\\\\e[1;34m/.."
     }
     idx++
   }

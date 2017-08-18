@@ -31,9 +31,8 @@ for OPT in $ALLOPTS; do
       shift
       ;;
     '--help')
-      echo -e  "cdx version 2.0 2017"
+      echo -e  "cdx is hyper cd command  Version 2.0 2017"
       echo -e  "Usage : cdx [OPTIONS] PATH"
-      echo -e  "cdx is hyper cd command"
       echo -e  "This script is wrapper for the cd command."
       echo -e  "cdx automatically adds the value stored in CDX_DEFAULT_OPTS to option."
       echo -e  "Options : "
