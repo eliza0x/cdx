@@ -1,5 +1,7 @@
 # __cdx__
 
+![logo](./logo.png)
+
 cdx is hyper cd command.
 
 ## __Description__
