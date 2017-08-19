@@ -1,12 +1,15 @@
 # __cdx__
 
-![logo](./logo.png)
+![logo](./img/logo.png)
 
 cdx is hyper cd command.
 
 ## __Description__
 
 cdx is wrapper for cd command. cdx can move to directory from history or bookmark, or ssh remote. 
+
+## __Demo__
+![demo](./img/demo.gif)
 
 ## __Install__
 
