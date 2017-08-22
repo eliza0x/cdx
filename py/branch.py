@@ -13,6 +13,8 @@ elif any(opt in argv for opt in ['-b',]):
     print(1)
 elif last == '--':
     print(2)
+elif any(opt in argv for opt in ['+b',]):
+    print(6)
 elif any(opt in argv for opt in ['--automake',]):
     print(3)
 elif any(opt in argv for opt in ['--make',]):

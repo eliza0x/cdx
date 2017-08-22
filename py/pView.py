@@ -1,5 +1,7 @@
 import os
 import cdx_color
+import sys
+
 
 Homepath = os.environ["HOME"]
 
@@ -31,3 +33,8 @@ def cdx_echo(d1, d2):
         "cdx  " + cdx_color.reset + ": "
     sepa = cdx_color.reset + " ->>> "
     print(prefix + view(d1) + sepa + view(d2) + cdx_color.reset)
+
+
+if __name__ == '__main__':
+    argv=sys.argv[1:]
+    cdx_echo(argv[0],argv[1])

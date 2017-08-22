@@ -43,17 +43,17 @@ make = False
 ls=False
 automake=False
 changeTo = current
-
+popd=False
 cdcommand="pushd"
 
 for opt in argv:
     if opt == '--ssh':
         ssh = True
     elif opt == '--help':
-        print(cdx_dir+"/sh/help.sh")
+        print("cdcommand=help;"+cdx_dir+"/sh/help.sh")
         sys.exit()
     elif opt == '-p':
-        command += "popd;"
+        popd=True
     elif opt == '--ls':
         ls=True
     elif opt == '--make':
@@ -71,12 +71,16 @@ if ssh:
         check = subprocess.check_output(
             "cat " + HOME + "/.ssh/config|grep ^Host|awk '{print $2}'|grep " + changeTo, shell=True)
         if check != "":
-            command = "ssh " + changeTo
+            print("ssh " + changeTo)
             sys.exit()
+if popd:
+    changeTo=""
+    cdcommand="popd"
+command="cdcommand="+cdcommand+";"+command+"changeTo="+changeTo+";"
 
 
 
 if ls:
-    command+="ls;"
+    command="autols=1;"+command
 
 print(command)
