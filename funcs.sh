@@ -20,17 +20,14 @@ cdx_echo(){
 file_deco(){
   $instdir/file_deco.sh
 }
-
-man_tmux()
-{
-  if [ "$TMUX" != "" ]; then
-    tmux split-window man $@
-  else
-    bash -c "man $@"
-  fi
+man_tmux () 
+{ 
+    if [ "$TMUX" != "" ]; then
+        tmux split-window man $@;
+    else
+        bash -c "man $@";
+    fi
 }
-alias man=man_tmux
-
 xztaityozx_fzf_tmux(){
   if [ "$TMUX" != "" ]; then
     fzf-tmux
