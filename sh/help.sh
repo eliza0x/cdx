@@ -1,0 +1,17 @@
+echo "
+cdx is hyper cd command  Version 2.0 2017
+Usage : cdx [OPTIONS] PATH
+This script is wrapper for the cd command.
+cdx automatically adds the value stored in CDX_DEFAULT_OPTS to option.
+Options : 
+	--help		print this help.
+	--cd		Use cd command instead of pushd
+	--ls		ls command automatically executed after change directory.
+	-h		cd from history.
+	-b		cd from bookmark.
+	+b		Add current directory to bookmark
+	-p		Use popd command instead cd or pushd command.
+	--automake	When destination directory is not exists. cdx make directory automatically.
+	--make		When destination directory is not exists. cdx asks if you want to make directory.
+	--ssh		Allow ssh login when giving cdx a host name in ~/.ssh/config.if same name directory exists. change directory has priority"
+

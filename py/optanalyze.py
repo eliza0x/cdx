@@ -12,6 +12,8 @@ shell = os.environ["SHELL"]
 defaultOpt = os.environ.get("CDX_DEFAULT_OPTS", "")
 HOME = os.environ["HOME"]
 
+cdx_dir=os.environ["CDX_DIR"]
+
 current = subprocess.check_output("pwd").decode('utf-8').replace('\n', '')+"/"
 
 argv = defaultOpt.split(" ") + argv
@@ -47,15 +49,17 @@ cdcommand="pushd"
 for opt in argv:
     if opt == '--ssh':
         ssh = True
+    elif opt == '--help':
+        print(cdx_dir+"/sh/help.sh")
+        sys.exit()
     elif opt == '-p':
         command += "popd;"
     elif opt == '--ls':
         ls=True
     elif opt == '--make':
-        make=True
+        pass
     elif opt == '--automake':
-        make=True
-        automake=True
+        pass
     elif opt=='--cd':
         cdcommand="cd"
     else:
@@ -70,20 +74,6 @@ if ssh:
             command = "ssh " + changeTo
             sys.exit()
 
-#if os.system("cd "+changeTo+" 2> /dev/null 1 > /dev/null") != 0:
-#    if make:
-#        if automake:
-#            os.mkdir(current+changeTo)
-#            command+="echo -e \""+cdx_color.cyan+"Directory has made automatically by --automake option"+cdx_color.reset+"\";"
-#            command+=cdcommand+" "+changeTo+" > /dev/null;"
-#        else:
-#            os.system("echo \""+cdx_color.cyan+changeTo+" is not exists at current direcory. \n Do you want to make direcory?(y/n) "+cdx_color.reset+"\"")
-#            ans=input(">>>" )
-#            if ans=='y':
-#                os.mkdir(current+changeTo)
-#                command+=cdcommand+" "+changeTo+" > /dev/null"
-#            else:
-#                command=""
 
 
 if ls:
