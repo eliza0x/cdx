@@ -24,6 +24,9 @@ else:
 make=False
 automake=False
 
+if argv[1] == 6:
+    sys.exit()
+
 if argv[1] == "4":
     make=True
 

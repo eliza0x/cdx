@@ -9,9 +9,9 @@ cdx()
   if [ $branch == 0 ]; then
     intaractive_srcFile="$HOME/.cdx_history"
   elif [ $branch == 2 ];then
-    intaractive_srcFile=""
+    intaractive_srcFile=$(echo "$@"|awk '{print $NF}')
   fi
-
+  
   python3 $CDX_DIR/py/dirmake.py $branch $(echo "$@"|awk '{print $NF}')
   if [ $? == 1 ]; then
     return 0

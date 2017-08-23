@@ -1,4 +1,3 @@
-echo "
 cdx is hyper cd command  Version 2.0 2017
 Usage : cdx [OPTIONS] PATH
 This script is wrapper for the cd command.
@@ -13,5 +12,5 @@ Options :
 	-p		Use popd command instead cd or pushd command.
 	--automake	When destination directory is not exists. cdx make directory automatically.
 	--make		When destination directory is not exists. cdx asks if you want to make directory.
-	--ssh		Allow ssh login when giving cdx a host name in ~/.ssh/config.if same name directory exists. change directory has priority"
+	--ssh		Allow ssh login when giving cdx a host name in ~/.ssh/config.if same name directory exists. change directory has priority
 

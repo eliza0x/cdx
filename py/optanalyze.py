@@ -8,6 +8,7 @@ import cdx_color
 argv = sys.argv[1:]
 
 shell = os.environ["SHELL"]
+#shell = "/usr/bin/fish"
 
 defaultOpt = os.environ.get("CDX_DEFAULT_OPTS", "")
 HOME = os.environ["HOME"]
@@ -25,7 +26,7 @@ def export(name, value):
     if shell == "/bin/bash":
         return name + "='" + value + "';"
     elif shell == "/usr/bin/fish":
-        return "set " + name + " " + value
+        return "set " + name + " \"" + value + "\";"
 
 # return :
 # 0:exit
@@ -50,7 +51,7 @@ for opt in argv:
     if opt == '--ssh':
         ssh = True
     elif opt == '--help':
-        print("cdcommand=help;"+cdx_dir+"/sh/help.sh")
+        print(export("cdcommand","help")+"cat "+cdx_dir+"/help.txt")
         sys.exit()
     elif opt == '-p':
         popd=True
@@ -76,11 +77,11 @@ if ssh:
 if popd:
     changeTo=""
     cdcommand="popd"
-command="cdcommand="+cdcommand+";"+command+"changeTo="+changeTo+";"
-
+#command="cdcommand="+cdcommand+";"+command+"changeTo="+changeTo+";"
+command=export("cdcommand",cdcommand)+command+export("changeTo",changeTo)
 
 
 if ls:
-    command="autols=1;"+command
+    command=export("autols","1")+command
 
 print(command)

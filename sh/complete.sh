@@ -16,7 +16,7 @@ _cdx_complete(){
       return 0
       ;;
     */--)
-      COMPREPLY=(`python3 $CDX_DIR/py/filedeco.py |$CDX_FUZZY_COMMAND|head -n1|awk '{print $2}'`)
+      COMPREPLY=(`python3 $CDX_DIR/py/filedeco.py "$2" |$CDX_FUZZY_COMMAND|head -n1|awk '{print $2}'`)
       return 0
       ;;
 	esac
