@@ -11,15 +11,21 @@ function cdx
     set intaractive_srcFile (echo $argv|awk '{print $NF}')
   end
 
+
+  set cmd (python3 $CDX_DIR/py/optanalyze.py $argv)
+  eval $cmd
+
+  if [ $cdcommand = "ssh" ];
+    echo -e "\e[1;34mssh to "$changeTo"\e[39m"
+    ssh $changeTo
+    return 0
+  end
+
   python3 $CDX_DIR/py/dirmake.py $branch (echo "$argv"|awk '{print $NF}')
   if [ $status = 1 ];
     return 0
   end
-
-  set cmd (python3 $CDX_DIR/py/optanalyze.py $argv)
-
   if [ $branch -le 2 ];
-    eval $cmd
     python3 $CDX_DIR/py/filedeco.py $intaractive_srcFile |eval $CDX_FUZZY_COMMAND | awk '{print $2}' 2> /dev/null |read dir
     eval $cdcommand $dir
 
@@ -28,7 +34,6 @@ function cdx
     return 0
 
   else
-    eval $cmd
     if [ $cdcommand = "popd" ];
       eval $cdcommand
     else if [ $cdcommand = "help" ];

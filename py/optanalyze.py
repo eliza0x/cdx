@@ -69,10 +69,10 @@ for opt in argv:
 
 if ssh:
     if os.path.exists(HOME + "/.ssh/config"):
-        check = subprocess.check_output(
-            "cat " + HOME + "/.ssh/config|grep ^Host|awk '{print $2}'|grep " + changeTo, shell=True)
-        if check != "":
-            print("ssh " + changeTo)
+        check = os.system(
+            "cat " + HOME + "/.ssh/config|grep ^Host|awk '{print $2}'|grep  "+ changeTo+" 2>/dev/null >/dev/null")
+        if check == 0:
+            print(export("cdcommand","ssh")+export("changeTo",changeTo))
             sys.exit()
 if popd:
     changeTo=""
