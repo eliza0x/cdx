@@ -8,15 +8,21 @@ cdx is hyper cd command.
 
 cdx is wrapper for cd command. cdx can move to directory from history or bookmark, or ssh remote. 
 
+## __Require__
+python3  
+bash or fish
+
 ## __Demo__
 ![demo](./img/demo.gif)
 
 ## __Install__
 
+`cdx` requires python3. please install python3 before install `cdx`.
+
 ```sh
 git clone https://github.com/xztaityozx/cdx
 cd cdx
-./install.sh
+./sh/install.sh
 ```
 
 ## __Usage__
@@ -32,11 +38,10 @@ Usage is the same the cd command.
 |Option|Action|
 |:--:|:--:|
 |--help|Show help|
-|--fuzzy|Use fuzzy search like fzf , peco or etc. The command name must be stored in the variable `CDX_FUZZY_COMMAND`|
 |--cd|Use cd command instead of pushd|
 |--ls|ls command automatically executes after change directory|
-|-h|cd from history. This option require --fuzzy option|
-|-b|cd from bookmark. This option require --fuzzy option|
+|-h|cd from history|
+|-b|cd from bookmark|
 |+b|Add current directory to bookmark|
 |-p|Use popd command instead of cd or pushd command|
 |--automake|When destination directory is not exists. cdx make directory automatically|
@@ -50,10 +55,15 @@ ex)
 
 ```sh
 ...
-CDX_DEFAULT_OPTS="--ssh --fuzzy --make"
+CDX_DEFAULT_OPTS="--ssh --make"
 CDX_FUZZY_COMMAND="fzf"
 ...
 ```
+
+## __Release Node__
+- 2017/08/23 
+  * Support fish shell
+  * Mostly all functions ware been rewrote by python.This change is to support for fish shell
 
 # __cdx__
 
@@ -62,14 +72,6 @@ CDX_FUZZY_COMMAND="fzf"
 ## __Description__
 
 `cdx`はcdコマンドのラッパースクリプトです。履歴やブックマーク、sshリモートへ移動できます。
-
-## __Install__
-
-```sh
-git clone https://github.com/xztaityozx/cdx
-cd cdx
-./install.sh
-```
 
 ## __Usage__
 
@@ -84,7 +86,6 @@ cdx [OPTION] PATH
 |Option|Action|
 |:--:|:--:|
 |--help|ヘルプを表示します|
-|--fuzzy|パスの補完や履歴、ブックマークの取得に`fzf`や`peco`のようなファジー検索ツールを使用します|
 |--cd|`cdx`ではデフォルトで`pushd`コマンドを使うようにしていますがこれを`cd`に置き換えます|
 |--ls|`cd`した後に自動的に`ls`コマンドを実行します|
 |-h|履歴から`cd`します。これには--fuzzyオプションが必要です|
@@ -99,7 +100,7 @@ cdx [OPTION] PATH
 
 ```sh
 ...
-CDX_DEFAULT_OPTS="--ssh --make --fuzzy"
+CDX_DEFAULT_OPTS="--ssh --make"
 CDX_FUZZY_COMMAND="fzf"
 ...
 ```
