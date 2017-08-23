@@ -1,4 +1,4 @@
-cdx is hyper cd command  Version 2.0 2017
+cdx is hyper cd command  Version 2.1 2017
 Usage : cdx [OPTIONS] PATH
 This script is wrapper for the cd command.
 cdx automatically adds the value stored in CDX_DEFAULT_OPTS to option.
