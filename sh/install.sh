@@ -7,7 +7,7 @@ shell=$SHELL
 
 echo -e $(cat ./logobase64.txt|base64 -d)
 
-if [ $shell -eq "/bin/bash" ]; then
+if [ $shell = "/bin/bash" ]; then
   # bash
 
   echo "# cdx settings " >> ~/.bashrc
