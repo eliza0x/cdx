@@ -19,7 +19,7 @@ if [ $shell = "/bin/bash" ]; then
   echo "export CDX_DIR=\""$(pwd)"\"" >> ~/.bashrc
   echo ". "$(pwd)"/sh/func.sh" >> ~/.bashrc
   echo ". "$(pwd)"/sh/complete.sh" >> ~/.bashrc
-elif [ $shell -eq "/usr/bin/fish" ]; then
+elif [ $shell = "/usr/bin/fish" ]; then
   
   echo "You write the following settings to config.fish."
   echo "------------------------------------------------"
