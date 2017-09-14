@@ -6,6 +6,7 @@
 shell=$SHELL
 
 echo -e $(cat ./logobase64.txt|base64 -d)
+echo -e "\e[49m"
 
 if [ $shell = "/bin/bash" ]; then
   # bash
